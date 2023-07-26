@@ -20,7 +20,7 @@ VideoStream = function(options) {
   this.inputStreamStarted = false
   this.stream = undefined
   this.startMpeg1Stream()
-  this.pipeStreamToSocketServer()
+  this.pipeStreamToSocketServer(options.httpsServer)
   return this
 }
 
@@ -87,9 +87,9 @@ VideoStream.prototype.startMpeg1Stream = function() {
   return this
 }
 
-VideoStream.prototype.pipeStreamToSocketServer = function() {
+VideoStream.prototype.pipeStreamToSocketServer = function(httpsServer) {
   this.wsServer = new ws.Server({
-    port: this.wsPort
+    httpsServer
   })
   this.wsServer.on("connection", (socket, request) => {
     return this.onSocketConnect(socket, request)
